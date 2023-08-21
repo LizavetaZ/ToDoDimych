@@ -1,7 +1,5 @@
-import {useState} from "react";
-import {v1} from "uuid";
-import {TasksStateType} from "../App";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removaTaskAC, tasksReducer} from "./tasks-reducer";
+import {TasksStateType} from "../AppWithRedux";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./tasks-reducer";
 import {addTodolistAC, removeTodolistAC} from "./todolists-reducer";
 
 test ('correct task should be deleted from correct array', () => {
@@ -17,7 +15,7 @@ test ('correct task should be deleted from correct array', () => {
         ]
     }
 
-    const action = removaTaskAC('2', 'toDoList2')
+    const action = removeTaskAC('2', 'toDoList2')
 
     const endState = tasksReducer(startState, action)
 

@@ -1,6 +1,6 @@
 import {addTodolistAC, changeTotodlistTitleAC, todolistsReducer} from './todolists-reducer'
 import { v1 } from 'uuid'
-import {FilterValuesType, TodolistType} from '../App'
+import {FilterValuesType, TodolistType} from '../AppWithRedux'
 
 test('correct todolist should be removed', () => {
     let todolistId1 = v1()
@@ -31,8 +31,9 @@ test('correct todolist should be added', () => {
     const endState = todolistsReducer(startState, addTodolistAC(newTodolistTitle))
 
     expect(endState.length).toBe(3)
-    expect(endState[2].title).toBe(newTodolistTitle)
-    expect(endState[2].filter).toBe('all')
+    expect(endState[0].title).toBe(newTodolistTitle)
+    expect(endState[0].filter).toBe('all')
+    expect(endState[0].id).toBeDefined()
 })
 
 test('todolist title should be changed', () => {
@@ -74,6 +75,7 @@ test('todolist filter should be changed', () => {
 
     const endState = todolistsReducer(startState, action)
 
+    expect(endState[0].filter).toBe('all')
     expect(endState[0].filter).toBe('all')
     expect(endState[1].filter).toBe('completed')
 })
