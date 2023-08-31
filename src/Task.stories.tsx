@@ -14,8 +14,9 @@ export const TaskBaseExample = (props: any) => {
         action('Task Status Changed')({todolistId, taskId, isDone});
     };
 
-    const onRemoveTaskHandler = () => {
-        action("Task was deleted")}
+    const onRemoveTaskHandler = (taskId: string, todolistId: string) => {
+        action("Task was deleted")();
+    };
 
         return (<>
                 <Task todolistId='todolistId1' task={{id: '1', isDone: true, title: 'CSS'}}/>
