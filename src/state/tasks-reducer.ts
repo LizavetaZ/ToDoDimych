@@ -41,10 +41,18 @@ const initialState : TasksStateType = {}
 export const tasksReducer = (state: TasksStateType = initialState, action: ActionTypes): TasksStateType => {
     switch (action.type) {
         case 'REMOVE-TASK': {
-            const stateCopy = {...state}
+            // const stateCopy = {...state}
+            // const tasks = state[action.todoListId]
+            // const filteredTasks = tasks.filter(t => t.id !== action.taskId)
+            // stateCopy[action.todoListId] = filteredTasks
+            // return stateCopy
+
+            const stateCopy = {...state}  //для storybook
             const tasks = state[action.todoListId]
-            const filteredTasks = tasks.filter(t => t.id !== action.taskId)
-            stateCopy[action.todoListId] = filteredTasks
+            if (tasks) {
+                const filteredTasks = tasks.filter(t => t.id !== action.taskId)
+                stateCopy[action.todoListId] = filteredTasks
+            }
             return stateCopy
         }
         case 'ADD-TASK': {
@@ -56,9 +64,16 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             return stateCopy
         }
         case 'CHANGE-TASK-STATUS': {
-            const stateCopy = {...state}
+            // const stateCopy = {...state}
+            // const tasks = stateCopy[action.todoListId]
+            // stateCopy[action.todoListId] = tasks.map(t=> t.id === action.taskId ? {...t, isDone: action.isDone} : t)
+            // return stateCopy
+
+            const stateCopy = {...state}  //для storybook
             const tasks = stateCopy[action.todoListId]
-            stateCopy[action.todoListId] = tasks.map(t=> t.id === action.taskId ? {...t, isDone: action.isDone} : t)
+            if (tasks) {
+                stateCopy[action.todoListId] = tasks.map(t => t.id === action.taskId ? {...t, isDone: action.isDone} : t)
+            }
             return stateCopy
         }
         case 'CHANGE-TASK-TITLE': {
