@@ -145,9 +145,23 @@ export const UpdateTask = () => {
     const [todolistId, setTodolistId] = useState<string>('')
     const [title, setTitle] = useState<string>('')
     const [taskId, setTaskId] = useState<string>('')
+    const [description, setDescription] = useState<string>('description 1')
+    const [completed, setCompleted] = useState<boolean>(false)
+    const [status, setStatus] = useState<number>(0)
+    const [priority, setPriority] = useState<number>(0)
+    const [startDate, setStartDate] = useState<string>('')
+    const [deadline, setDeadline] = useState<string>('')
 
-    const createTask = () => {
-        todolistsApi.updateTask(todolistId, taskId, title, {title: title } )
+    const updateTask = () => {
+        todolistsApi.updateTask(todolistId, taskId,{
+            deadline: '',
+            description: description,
+            priority: priority,
+            startDate: '',
+            status: status,
+            title: title,
+            completed: completed
+        } )
             .then((res) => {
                 setState(res.data)
             })
@@ -156,8 +170,11 @@ export const UpdateTask = () => {
         <div>
             <input placeholder={'todolistId'} value={todolistId} onChange={(e) => {setTodolistId(e.currentTarget.value)}}/>
             <input placeholder={'taskId'} value={taskId} onChange={(e) => {setTaskId(e.currentTarget.value)}}/>
-            <input placeholder={'taskTitle'} value={title} onChange={(e) => {setTitle(e.currentTarget.value)}}/>
-            <button onClick={createTask}>Update task</button>
+                <input placeholder={'taskTitle'} value={title} onChange={(e) => {setTitle(e.currentTarget.value)}}/>
+            <input placeholder={'description'} value={description} onChange={(e) => {setDescription(e.currentTarget.value)}}/>
+            <input placeholder={'status'} value={status} onChange={(e) => {setStatus(Number(e.currentTarget.value))}}/>
+            <input placeholder={'priority'} value={priority} onChange={(e) => {setPriority(Number(e.currentTarget.value))}}/>
+            <button onClick={updateTask}>Update task</button>
         </div>
     </div>
 }

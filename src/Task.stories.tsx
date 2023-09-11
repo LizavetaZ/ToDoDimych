@@ -1,6 +1,7 @@
 import {action} from '@storybook/addon-actions'
 import {Task} from "./Task";
 import ReduxStorePropviderDecorator from "./stories/ReduxStorePropviderDecorator";
+import {TaskPriorities, TaskStatuses} from "./api/todolists-Api";
 
 export default {
     title: 'Task Component',
@@ -18,9 +19,26 @@ export const TaskBaseExample = (props: any) => {
         action("Task was deleted")();
     };
 
-        return (<>
-                <Task todolistId='todolistId1' task={{id: '1', isDone: true, title: 'CSS'}}/>
-                <Task todolistId='todolistId2' task={{id: '2', isDone: false, title: 'JS'}}/>
-            </>
-        );
-    }
+    return (<>
+            <Task todolistId='todolistId1' task={{
+                id: '1', status: TaskStatuses.Completed, title: 'CSS', description: '',
+                priority: TaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                order: 0,
+                addedDate: '',
+                completed: false,
+                todoListId: 'todolistId1'
+            }}/>
+            <Task todolistId='todolistId2' task={{
+                id: '2', status: TaskStatuses.New, title: 'JS', description: '', priority: TaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                order: 0,
+                addedDate: '',
+                completed: false,
+                todoListId: 'todolistId2'
+            }}/>
+        </>
+    );
+}

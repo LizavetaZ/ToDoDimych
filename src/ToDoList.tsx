@@ -1,5 +1,4 @@
 import React, {useCallback} from "react";
-import {FilterValuesType} from "./AppWithRedux";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Button, IconButton} from "@mui/material";
@@ -8,6 +7,8 @@ import {addTaskAC} from "./state/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "./state/store";
 import {Task} from "./Task";
+import {TaskStatuses, TaskType} from "./api/todolists-Api";
+import {FilterValuesType} from "./state/todolists-reducer";
 
 type ToDoListType = {
     id: string
@@ -17,18 +18,18 @@ type ToDoListType = {
     removeToDoList: (todolistId: string) => void
     changeToDoListTitle: (todolistId: string, title: string) => void
 }
-export type TasksType = {
-    id: string,
-    title: string,
-    isDone: boolean
-}
+// export type TasksType = {
+//     id: string,
+//     title: string,
+//     isDone: boolean
+// }
 
 
 export const ToDoList = React.memo((props: ToDoListType) => {
     console.log('todo')
     const dispatch = useDispatch()
 
-    const tasks = useSelector<AppRootState, Array<TasksType>>(state => state.tasks[props.id])
+    const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[props.id])
 
     const onAllClickHandler = useCallback(() => props.changeFilter('all', props.id), [props.changeFilter, props.id])
     const onActiveClickHandler = useCallback(() => props.changeFilter('active', props.id), [props.changeFilter, props.id])
@@ -44,10 +45,10 @@ export const ToDoList = React.memo((props: ToDoListType) => {
 
     let tasksForToDoList = tasks
     if (props.filter === 'completed') {
-        tasksForToDoList = tasksForToDoList.filter(t => t.isDone === true)
+        tasksForToDoList = tasksForToDoList.filter(t => t.status === TaskStatuses.Completed)
     }
     if (props.filter === 'active') {
-        tasksForToDoList = tasksForToDoList.filter(t => t.isDone === false)
+        tasksForToDoList = tasksForToDoList.filter(t => t.status === TaskStatuses.New)
     }
 
     const addTaskForItemForm = useCallback((title: string) => {
