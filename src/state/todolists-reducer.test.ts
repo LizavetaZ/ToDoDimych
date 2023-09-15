@@ -1,7 +1,7 @@
 import {
     addTodolistAC,
     changeTotodlistTitleAC,
-    FilterValuesType,
+    FilterValuesType, setTodolistsAC,
     ToDoListDomainType,
     todolistsReducer
 } from './todolists-reducer'
@@ -68,5 +68,12 @@ test('todolist filter should be changed', () => {
     expect(endState[0].filter).toBe('all')
     expect(endState[0].filter).toBe('all')
     expect(endState[1].filter).toBe('completed')
+})
+
+test('todolists should be set to the state', () => {
+    const action = setTodolistsAC(startState)
+    const endState = todolistsReducer([], action)
+
+    expect(endState.length).toBe(2)
 })
 

@@ -1,14 +1,14 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useEffect} from "react";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Button, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
-import {addTaskAC} from "./state/tasks-reducer";
+import {addTaskAC, fetchTasksTC} from "./state/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "./state/store";
 import {Task} from "./Task";
 import {TaskStatuses, TaskType} from "./api/todolists-Api";
-import {FilterValuesType} from "./state/todolists-reducer";
+import {fetchTodolistsTC, FilterValuesType} from "./state/todolists-reducer";
 
 type ToDoListType = {
     id: string
@@ -30,6 +30,10 @@ export const ToDoList = React.memo((props: ToDoListType) => {
     const dispatch = useDispatch()
 
     const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[props.id])
+
+    useEffect(() => {
+        dispatch(fetchTasksTC(props.id))
+    }, [])
 
     const onAllClickHandler = useCallback(() => props.changeFilter('all', props.id), [props.changeFilter, props.id])
     const onActiveClickHandler = useCallback(() => props.changeFilter('active', props.id), [props.changeFilter, props.id])
