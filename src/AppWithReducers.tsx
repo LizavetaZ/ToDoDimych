@@ -50,7 +50,20 @@ import React, {useReducer} from 'react';
 //     }
 //
 //     function addTask(title: string, todolistId: string) {
-//         dispatchToTasksReducer(addTaskAC(title, todolistId))
+// const action = addTaskAC({
+//                 id: 'id exists',
+//                 title: title,
+//                 status: TaskStatuses.New,
+//                 description: '',
+//                 priority: TaskPriorities.Low,
+//                 startDate: '',
+//                 deadline: '',
+//                 order: 0,
+//                 addedDate: '',
+//                 completed: false,
+//                 todoListId:todolistId
+//             })
+//         dispatchToTasksReducer(action)
 //     }
 //
 //     let toDoList1 = v1()

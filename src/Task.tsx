@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useCallback} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "./state/store";
-import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
+import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, removeTaskTC} from "./state/tasks-reducer";
 import {Checkbox, IconButton} from "@mui/material";
 import {EditableSpan} from "./EditableSpan";
 import {Delete} from "@mui/icons-material";
@@ -17,7 +17,7 @@ export const Task = React.memo((props: TaskPropsType) => {
     const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[props.todolistId])
 
     const onRemoveHandler = () => {
-        dispatch(removeTaskAC(props.task.id, props.todolistId))
+        dispatch(removeTaskTC(props.task.id, props.todolistId))
     }
 
     const onChangeStatusHandler = useCallback ((e: ChangeEvent<HTMLInputElement>) => {
