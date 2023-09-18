@@ -1,14 +1,14 @@
 import React, {useCallback, useEffect} from "react";
-import {AddItemForm} from "./AddItemForm";
-import {EditableSpan} from "./EditableSpan";
+import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
+import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {Button, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
-import {addTaskTC, fetchTasksTC} from "./state/tasks-reducer";
+import {addTaskTC, fetchTasksTC} from "../tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootState} from "./state/store";
-import {Task} from "./Task";
-import {TaskStatuses, TaskType} from "./api/todolists-Api";
-import {FilterValuesType} from "./state/todolists-reducer";
+import {AppRootState} from "../../../app/store";
+import {Task} from "./Task/Task";
+import {TaskStatuses, TaskType} from "../../../api/todolists-Api";
+import {FilterValuesType} from "../todolists-reducer";
 
 type ToDoListType = {
     id: string
@@ -18,12 +18,6 @@ type ToDoListType = {
     removeToDoList: (todolistId: string) => void
     changeToDoListTitle: (todolistId: string, title: string) => void
 }
-// export type TasksType = {
-//     id: string,
-//     title: string,
-//     isDone: boolean
-// }
-
 
 export const ToDoList = React.memo((props: ToDoListType) => {
     console.log('todo')
