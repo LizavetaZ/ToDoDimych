@@ -34,7 +34,7 @@ export enum TaskPriorities {
     Later = 4
 }
 
-type ResponseType<D = {}> = {
+export type ResponseType<D = {}> = {
     resultCode: number
     messages: string[]
     data: D
@@ -61,12 +61,12 @@ export type TaskType = {
 }
 
 
-type UpdateTaskModelType = {
+export type UpdateTaskModelType = {
     title: string
     description: string
     completed: boolean
-    status: number
-    priority: number
+    status: TaskStatuses
+    priority: TaskPriorities
     startDate: string
     deadline: string
 }

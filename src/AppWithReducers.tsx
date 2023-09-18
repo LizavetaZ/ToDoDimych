@@ -1,4 +1,6 @@
 import React, {useReducer} from 'react';
+import {updateTaskAC} from "./state/tasks-reducer";
+import {TaskStatuses} from "./api/todolists-Api";
 // import './App.css';
 // import {ToDoList} from "./ToDoList";
 // import {v1} from "uuid";
@@ -42,7 +44,7 @@ import React, {useReducer} from 'react';
 //
 //
 //     function changeStatus(taskId: string, status: TaskStatuses, todolistId: string) {
-//         dispatchToTasksReducer(changeTaskStatusAC(taskId, status, todolistId))
+//         dispatchToTasksReducer(updateTaskAC(taskId, {status}, todolistId))
 //     }
 //
 //     function removeTask(id: string, todolistId: string) {
@@ -138,14 +140,19 @@ import React, {useReducer} from 'react';
 //     })
 //
 //     function addToDoList(title: string) {
-//         const todolistAction = addTodolistAC(title); // Generate todolist action
+//         const todolistAction = addTodolistAC({
+// id: v1()
+// title: title
+// addedDate: ''
+// order: 0
+//         }); // Generate todolist action
 //         const todolistId = todolistAction.todolistId; // Get the todolistId from the action
 //         dispatchToTasksReducer(addTodolistForTasksAC(todolistId));
 //         dispatchToDoListsReducer(todolistAction);
 //     }
 //
 //     function changeTaskTitle(taskId: string, newTitle: string, todolistId: string) {
-//         dispatchToTasksReducer(changeTaskTitleAC(taskId, newTitle, todolistId))
+//         dispatchToTasksReducer(updateTaskAC(taskId, {title:newTitle}, todolistId))
 //     }
 //
 //     function changeToDoListTitle(todolistId: string, title: string) {

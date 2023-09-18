@@ -3,12 +3,12 @@ import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Button, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
-import {addTaskAC, addTaskTC, fetchTasksTC} from "./state/tasks-reducer";
+import {addTaskTC, fetchTasksTC} from "./state/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "./state/store";
 import {Task} from "./Task";
 import {TaskStatuses, TaskType} from "./api/todolists-Api";
-import {fetchTodolistsTC, FilterValuesType} from "./state/todolists-reducer";
+import {FilterValuesType} from "./state/todolists-reducer";
 
 type ToDoListType = {
     id: string
