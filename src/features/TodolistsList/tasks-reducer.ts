@@ -2,6 +2,7 @@ import {AddTodolistActionType, RemoveTodoListActionType, SetTodolistsActionType}
 import {TaskPriorities, TaskStatuses, TaskType, todolistsApi, UpdateTaskModelType} from "../../api/todolists-Api";
 import {Dispatch} from "redux";
 import {AppRootState} from "../../app/store";
+import {setAppErrorAC, setErrorACType, setAppStatusAC, setStatusACType} from "../../app/app-reducer";
 
 const initialState: TasksStateType = {}
 
@@ -48,10 +49,12 @@ export const updateTaskAC = (taskId: string, domainModel:UpdateDomainTaskModelTy
 export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) => ({type: 'SET-TASKS', tasks, todolistId} as const)
 
 //thunks
-export const fetchTasksTC = (todolistId: string): any => async (dispatch: Dispatch<ActionTypes>) => {
+export const fetchTasksTC = (todolistId: string): any => async (dispatch: Dispatch<ActionTypes | setStatusACType>) => {
     try {
+        dispatch(setAppStatusAC('loading'))
         const result = await todolistsApi.getTasks(todolistId)
         dispatch(setTasksAC(result.data.items, todolistId))
+        dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
         console.log(e)
     }
@@ -67,10 +70,23 @@ export const removeTaskTC = (taskId: string, todolistId: string): any => async (
     }
 }
 
-export const addTaskTC = (title: string, todoListId: string): any => async (dispatch: Dispatch<ActionTypes>) => {
+export const addTaskTC = (title: string, todoListId: string): any => async (dispatch: Dispatch<ActionTypes | setErrorACType | setStatusACType>) => {
     try {
+        dispatch(setAppStatusAC('loading'))
         const result = await todolistsApi.createTask(todoListId, title)
-        dispatch(addTaskAC(result.data.data.item))
+        if (result.data.resultCode === 0) {
+            dispatch(addTaskAC(result.data.data.item))
+            dispatch(setAppStatusAC('succeeded'))
+        }
+        else {
+            if (result.data.messages.length) {
+                dispatch(setAppErrorAC(result.data.messages[0]))
+            }
+            else {
+                dispatch(setAppErrorAC('Some error occurred'))
+            }
+            dispatch(setAppStatusAC('failed'))
+        }
     }
     catch (e) {
         console.log(e)

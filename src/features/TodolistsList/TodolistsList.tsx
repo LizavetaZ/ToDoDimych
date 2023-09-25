@@ -14,13 +14,20 @@ import {Grid, Paper} from "@mui/material";
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import {ToDoList} from "./Todolist/ToDoList";
 
-export const TodolistsList: React.FC = () => {
-    const dispatch = useDispatch()
+type PropsType = {
+    demo?: boolean;
+}
 
+export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
+
+    const dispatch = useDispatch()
     const todoLists = useSelector<AppRootState, Array<ToDoListDomainType>>(state => state.todolists)
     const tasks = useSelector<AppRootState, TasksStateType>(state => state.tasks)
 
     useEffect(() => {
+        if (demo) {
+            return
+        }
         dispatch(fetchTodolistsTC())
     }, [])
 
@@ -54,14 +61,12 @@ export const TodolistsList: React.FC = () => {
                         return (
                             <Grid item key={tl.id}>
                                 <Paper style={{padding: '10px'}}>
-                                    <ToDoList id={tl.id}
+                                    <ToDoList
                                               key={tl.id}
-                                              title={tl.title}
-                                              changeFilter={changeFilter}
-                                              filter={tl.filter}
+                                              todolist={tl} changeFilter={changeFilter}
                                               removeToDoList={removeToDoList}
                                               changeToDoListTitle={changeToDoListTitle}
-                                    /></Paper></Grid>)
+                                   demo={demo} /></Paper></Grid>)
                     })
                 }
             </Grid>

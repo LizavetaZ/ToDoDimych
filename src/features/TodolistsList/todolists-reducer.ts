@@ -1,5 +1,6 @@
 import {todolistsApi, ToDoListType} from "../../api/todolists-Api";
 import {Dispatch} from 'redux';
+import {RequestStatusType, setAppStatusAC, setStatusACType} from "../../app/app-reducer";
 
 const initialState: Array<ToDoListDomainType> = []
 
@@ -8,16 +9,17 @@ export const todolistsReducer = (state: Array<ToDoListDomainType> = initialState
         case 'REMOVE-TODOLIST':
             return state.filter(el => el.id !== action.id)
         case 'ADD-TODOLIST':
-            return [{...action.todolist, filter: 'all'}, ...state]
+            return [{...action.todolist, filter: 'all', entityStatus: "idle"}, ...state]
         case 'CHANGE-TODOLIST-TITLE':
            return  state.map(t => t.id === action.id ? {...t, title: action.title} : t)
         case 'CHANGE-TODOLIST-FILTER':
             return  state.map(t => t.id === action.id ? {...t, filter: action.filter} : t)
         case 'SET-TODOLISTS':
             return action.todolists.map(tl =>{
-                return {...tl, filter: 'all'}
+                return {...tl, filter: 'all', entityStatus: "idle"}
             } )
-
+        case "CHANGE-TODOLIST-ENTITY-STATUS":
+            return  state.map(t => t.id === action.id ? {...t, entityStatus: action.status} : t)
         default:
             return state
     }
@@ -34,31 +36,40 @@ export const changeTotodlistTitleAC = (id: string, title: string)=> ({type: 'CHA
 
 export const changeTotodlistFilterAC = (filter: FilterValuesType, id: string)=> ({type: 'CHANGE-TODOLIST-FILTER', filter, id} as const)
 
+export const changeTodolistEntityStatusAC = (id: string, status: RequestStatusType)=> ({type: 'CHANGE-TODOLIST-ENTITY-STATUS', id, status} as const)
+
 export const setTodolistsAC = (todolists: Array<ToDoListType>)=> ({type: 'SET-TODOLISTS', todolists} as const)
 
 //thunks
-export const fetchTodolistsTC = ():any => async (dispatch: Dispatch<ActionTypes>) => {
+export const fetchTodolistsTC = ():any => async (dispatch: ThunkDispatch) => {
     try {
+        dispatch(setAppStatusAC('loading'))
         let result = await todolistsApi.getToDoLists();
         dispatch(setTodolistsAC(result.data));
+        dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
         console.log(e);
     }
 };
 
-export const removeTodolistTC = (todolistId: string):any => async (dispatch: Dispatch<ActionTypes>) => {
+export const removeTodolistTC = (todolistId: string):any => async (dispatch: ThunkDispatch) => {
     try {
+        dispatch(setAppStatusAC('loading'))
+        dispatch(changeTodolistEntityStatusAC(todolistId, 'loading'))
         await todolistsApi.deleteToDoList(todolistId);
         dispatch(removeTodolistAC(todolistId));
+        dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
         console.log(e);
     }
 };
 
-export const addTodolistTC = (title: string):any => async (dispatch: Dispatch<ActionTypes>) => {
+export const addTodolistTC = (title: string):any => async (dispatch: ThunkDispatch) => {
     try {
+        dispatch(setAppStatusAC('loading'))
         const result = await todolistsApi.createToDoList(title);
         dispatch(addTodolistAC(result.data.data.item));
+        dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
         console.log(e);
     }
@@ -78,11 +89,13 @@ export type FilterValuesType = 'all' | 'completed' | 'active'
 
 export type ToDoListDomainType = ToDoListType & {
     filter: FilterValuesType
+    entityStatus: RequestStatusType
 }
 
 export type AddTodolistActionType = ReturnType<typeof addTodolistAC>
 export type RemoveTodoListActionType = ReturnType<typeof removeTodolistAC>
 export type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>
+export type changeTodolistEntityStatusACType = ReturnType<typeof changeTodolistEntityStatusAC>
 
 type ActionTypes =
     RemoveTodoListActionType
@@ -90,3 +103,7 @@ type ActionTypes =
     | ReturnType<typeof changeTotodlistTitleAC>
     | ReturnType<typeof changeTotodlistFilterAC>
     | SetTodolistsActionType
+| changeTodolistEntityStatusACType
+
+
+type ThunkDispatch = Dispatch<ActionTypes | setStatusACType>
