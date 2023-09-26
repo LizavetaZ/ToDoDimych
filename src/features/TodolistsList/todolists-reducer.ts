@@ -1,6 +1,6 @@
 import {todolistsApi, ToDoListType} from "../../api/todolists-Api";
 import {Dispatch} from 'redux';
-import {RequestStatusType, setAppStatusAC, setStatusACType} from "../../app/app-reducer";
+import {RequestStatusType, setAppStatusAC, setAppStatusACType} from "../../app/app-reducer";
 
 const initialState: Array<ToDoListDomainType> = []
 
@@ -47,8 +47,8 @@ export const fetchTodolistsTC = ():any => async (dispatch: ThunkDispatch) => {
         let result = await todolistsApi.getToDoLists();
         dispatch(setTodolistsAC(result.data));
         dispatch(setAppStatusAC('succeeded'))
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
+        console.log(error);
     }
 };
 
@@ -59,8 +59,8 @@ export const removeTodolistTC = (todolistId: string):any => async (dispatch: Thu
         await todolistsApi.deleteToDoList(todolistId);
         dispatch(removeTodolistAC(todolistId));
         dispatch(setAppStatusAC('succeeded'))
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
+        console.log(error);
     }
 };
 
@@ -70,8 +70,8 @@ export const addTodolistTC = (title: string):any => async (dispatch: ThunkDispat
         const result = await todolistsApi.createToDoList(title);
         dispatch(addTodolistAC(result.data.data.item));
         dispatch(setAppStatusAC('succeeded'))
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
+        console.log(error);
     }
 };
 
@@ -79,8 +79,8 @@ export const changeTotodlistTitleTC = (todolistId: string, title: string):any =>
     try {
         await todolistsApi.updateToDoList(todolistId,title);
         dispatch(changeTotodlistTitleAC(todolistId,title));
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
+        console.log(error);
     }
 };
 
@@ -106,4 +106,4 @@ type ActionTypes =
 | changeTodolistEntityStatusACType
 
 
-type ThunkDispatch = Dispatch<ActionTypes | setStatusACType>
+type ThunkDispatch = Dispatch<ActionTypes | setAppStatusACType>

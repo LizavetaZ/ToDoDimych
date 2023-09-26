@@ -2,7 +2,8 @@ import {AddTodolistActionType, RemoveTodoListActionType, SetTodolistsActionType}
 import {TaskPriorities, TaskStatuses, TaskType, todolistsApi, UpdateTaskModelType} from "../../api/todolists-Api";
 import {Dispatch} from "redux";
 import {AppRootState} from "../../app/store";
-import {setAppErrorAC, setErrorACType, setAppStatusAC, setStatusACType} from "../../app/app-reducer";
+import {setAppErrorAC, setAppErrorACType, setAppStatusAC, setAppStatusACType} from "../../app/app-reducer";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 
 const initialState: TasksStateType = {}
 
@@ -49,14 +50,14 @@ export const updateTaskAC = (taskId: string, domainModel:UpdateDomainTaskModelTy
 export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) => ({type: 'SET-TASKS', tasks, todolistId} as const)
 
 //thunks
-export const fetchTasksTC = (todolistId: string): any => async (dispatch: Dispatch<ActionTypes | setStatusACType>) => {
+export const fetchTasksTC = (todolistId: string): any => async (dispatch: Dispatch<ActionTypes | setAppStatusACType>) => {
     try {
         dispatch(setAppStatusAC('loading'))
         const result = await todolistsApi.getTasks(todolistId)
         dispatch(setTasksAC(result.data.items, todolistId))
         dispatch(setAppStatusAC('succeeded'))
-    } catch (e) {
-        console.log(e)
+    } catch (error: any) {
+        handleServerNetworkError(error, dispatch)
     }
 }
 
@@ -65,12 +66,12 @@ export const removeTaskTC = (taskId: string, todolistId: string): any => async (
         await todolistsApi.deleteTask(todolistId, taskId)
         dispatch(removeTaskAC(taskId, todolistId))
     }
-    catch (e) {
-        console.log(e)
+    catch (error: any) {
+        handleServerNetworkError(error, dispatch)
     }
 }
 
-export const addTaskTC = (title: string, todoListId: string): any => async (dispatch: Dispatch<ActionTypes | setErrorACType | setStatusACType>) => {
+export const addTaskTC = (title: string, todoListId: string): any => async (dispatch: Dispatch<ActionTypes | setAppErrorACType | setAppStatusACType>) => {
     try {
         dispatch(setAppStatusAC('loading'))
         const result = await todolistsApi.createTask(todoListId, title)
@@ -79,23 +80,17 @@ export const addTaskTC = (title: string, todoListId: string): any => async (disp
             dispatch(setAppStatusAC('succeeded'))
         }
         else {
-            if (result.data.messages.length) {
-                dispatch(setAppErrorAC(result.data.messages[0]))
-            }
-            else {
-                dispatch(setAppErrorAC('Some error occurred'))
-            }
-            dispatch(setAppStatusAC('failed'))
+            handleServerAppError(result.data, dispatch)
         }
     }
-    catch (e) {
-        console.log(e)
+    catch (error: any) {
+        handleServerNetworkError(error, dispatch)
     }
 }
 
 
 
-export const updateTaskTC = (taskId: string, domainModel:UpdateDomainTaskModelType, todoListId: string): any => async (dispatch: Dispatch<ActionTypes>, getState:()=> AppRootState) => {
+export const updateTaskTC = (taskId: string, domainModel:UpdateDomainTaskModelType, todoListId: string): any => async (dispatch: ThunkDispatch, getState:()=> AppRootState) => {
     try {
         const state = getState()
         const task = state.tasks[todoListId].find(t=> t.id == taskId)
@@ -114,11 +109,16 @@ export const updateTaskTC = (taskId: string, domainModel:UpdateDomainTaskModelTy
             deadline: task.deadline,
             ...domainModel
         }
-        await todolistsApi.updateTask(todoListId, taskId, apiModel)
-        dispatch(updateTaskAC(taskId, domainModel, todoListId))
+        const res = await todolistsApi.updateTask(todoListId, taskId, apiModel)
+        if(res.data.resultCode === 0) {
+            dispatch(updateTaskAC(taskId, domainModel, todoListId))
+        }
+        else {
+            handleServerAppError(res.data, dispatch)
+        }
     }
-    catch (e) {
-        console.log(e)
+    catch (error: any) {
+        handleServerNetworkError(error, dispatch)
     }
 }
 
@@ -145,3 +145,6 @@ type ActionTypes =
 export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
+
+
+type ThunkDispatch = Dispatch<ActionTypes | setAppStatusACType | setAppErrorACType>
