@@ -1,14 +1,24 @@
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
-import {AppBar, Button, Container, IconButton, LinearProgress, Toolbar, Typography} from "@mui/material";
+import {
+    AppBar,
+    Button,
+    CircularProgress,
+    Container,
+    IconButton,
+    LinearProgress,
+    Toolbar,
+    Typography
+} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import {TodolistsList} from "../features/TodolistsList/TodolistsList";
 import {ErrorSnackBar} from "../components/ErrorSnackBar/ErrorSnackBar";
-import {useSelector} from "react-redux";
-import {RequestStatusType} from "./app-reducer";
+import {useDispatch, useSelector} from "react-redux";
+import {initializeAppTC, RequestStatusType} from "./app-reducer";
 import {AppRootState} from "./store";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {Login} from "../features/Login/Login";
+import {logoutTC} from "../features/TodolistsList/auth-reducer";
 
 
 type PropsType = {
@@ -18,6 +28,22 @@ type PropsType = {
 function App({demo = false}: PropsType) {
 
     const status = useSelector<AppRootState, RequestStatusType>(state => state.app.status)
+    const isInitialized = useSelector<AppRootState, boolean>(state => state.app.isInitialized)
+    const dispatch = useDispatch()
+    const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
+
+    useEffect(() => {
+        dispatch(initializeAppTC())
+    }, [])
+
+    const logoutHandler = useCallback(() => {
+        dispatch(logoutTC())
+    }, [])
+
+    if(!isInitialized) {
+        return <div style={{position:'fixed', top: "30%", width:'100%', textAlign:'center'}}> <CircularProgress /></div>
+    }
+
 
     return (
         <BrowserRouter>
@@ -31,7 +57,7 @@ function App({demo = false}: PropsType) {
                         <Typography variant={"h6"}>
                             News
                         </Typography>
-                        <Button color={"inherit"}>Login</Button>
+                        {isLoggedIn && <Button color={"inherit"} onClick={logoutHandler}>Login out</Button>}
                     </Toolbar>
                     {status === 'loading' && <LinearProgress/>}
                 </AppBar>

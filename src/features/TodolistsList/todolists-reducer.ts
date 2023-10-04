@@ -1,6 +1,13 @@
 import {todolistsApi, ToDoListType} from "../../api/todolists-Api";
 import {Dispatch} from 'redux';
-import {RequestStatusType, setAppStatusAC, setAppStatusACType} from "../../app/app-reducer";
+import {
+    RequestStatusType,
+    setAppErrorAC,
+    setAppErrorACType,
+    setAppStatusAC,
+    setAppStatusACType
+} from "../../app/app-reducer";
+import {handleServerNetworkError} from "../../utils/error-utils";
 
 const initialState: Array<ToDoListDomainType> = []
 
@@ -47,8 +54,8 @@ export const fetchTodolistsTC = ():any => async (dispatch: ThunkDispatch) => {
         let result = await todolistsApi.getToDoLists();
         dispatch(setTodolistsAC(result.data));
         dispatch(setAppStatusAC('succeeded'))
-    } catch (error) {
-        console.log(error);
+    } catch (error: any) {
+        handleServerNetworkError(error, dispatch)
     }
 };
 
@@ -106,4 +113,4 @@ type ActionTypes =
 | changeTodolistEntityStatusACType
 
 
-type ThunkDispatch = Dispatch<ActionTypes | setAppStatusACType>
+type ThunkDispatch = Dispatch<ActionTypes | setAppStatusACType | setAppErrorACType>
