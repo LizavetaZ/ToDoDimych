@@ -10,12 +10,12 @@ import Button from '@mui/material/Button';
 import {useFormik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {loginTC} from "../TodolistsList/auth-reducer";
-import {AppRootState} from "../../app/store";
+import {AppRootState, useAppDispatch} from "../../app/store";
 import {Navigate, useNavigate} from 'react-router-dom';
 
 export const Login = () => {
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
 
     const formik = useFormik({

@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useCallback} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootState} from "../../../../app/store";
+import {AppRootState, useAppDispatch} from "../../../../app/store";
 import {removeTaskTC, updateTaskTC} from "../../tasks-reducer";
 import {Checkbox, IconButton} from "@mui/material";
 import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
@@ -13,7 +13,7 @@ type TaskPropsType = {
 }
 export const Task = React.memo((props: TaskPropsType) => {
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[props.todolistId])
 
     const onRemoveHandler = () => {

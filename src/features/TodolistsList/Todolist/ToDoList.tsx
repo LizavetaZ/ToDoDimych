@@ -5,7 +5,7 @@ import {Button, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 import {addTaskTC, fetchTasksTC} from "../tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootState} from "../../../app/store";
+import {AppRootState, useAppDispatch} from "../../../app/store";
 import {Task} from "./Task/Task";
 import {TaskStatuses, TaskType} from "../../../api/todolists-Api";
 import {FilterValuesType, ToDoListDomainType} from "../todolists-reducer";
@@ -20,7 +20,7 @@ type ToDoListType = {
 
 export const ToDoList = React.memo(({demo, ...props}: ToDoListType) => {
     console.log('todo')
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[props.todolist.id])
 

@@ -15,7 +15,7 @@ import {TodolistsList} from "../features/TodolistsList/TodolistsList";
 import {ErrorSnackBar} from "../components/ErrorSnackBar/ErrorSnackBar";
 import {useDispatch, useSelector} from "react-redux";
 import {initializeAppTC, RequestStatusType} from "./app-reducer";
-import {AppRootState} from "./store";
+import {AppRootState, useAppDispatch, useAppSelector} from "./store";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {Login} from "../features/Login/Login";
 import {logoutTC} from "../features/TodolistsList/auth-reducer";
@@ -29,8 +29,9 @@ function App({demo = false}: PropsType) {
 
     const status = useSelector<AppRootState, RequestStatusType>(state => state.app.status)
     const isInitialized = useSelector<AppRootState, boolean>(state => state.app.isInitialized)
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
+    const isLoggedIn1 = useAppSelector(state => state.auth.isLoggedIn)
 
     useEffect(() => {
         dispatch(initializeAppTC())
