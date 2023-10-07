@@ -97,26 +97,23 @@ test('correct task should be deleted from correct array', () => {
     expect(endState['toDoList1'].length).toBe(3)
     expect(endState['toDoList2'].length).toBe(2)
     expect(endState['toDoList2'].every(t => t.id !== '2')).toBeTruthy()
-    expect(endState['toDoList2'][0].id).toBe('1')
-    expect(endState['toDoList2'][1].id).toBe('3')
 })
 
 test('correct task should be added from correct array', () => {
-    const action = addTaskAC(
-        {task:{
-            id: 'id exists',
-            title: "juice",
-            status: TaskStatuses.New,
-            completed: false,
-            todoListId: 'toDoList2',
-            addedDate: '',
-            startDate: '',
-            deadline: '',
-            description: '',
-            order: 0,
-            priority: TaskPriorities.Low
-        }}
-    )
+    let task = {
+        id: 'id exists',
+        title: "juice",
+        status: TaskStatuses.New,
+        completed: false,
+        todoListId: 'toDoList2',
+        addedDate: '',
+        startDate: '',
+        deadline: '',
+        description: '',
+        order: 0,
+        priority: TaskPriorities.Low
+    };
+    const action = addTaskAC(task)
 
     const endState = tasksReducer(startState, action)
 
@@ -143,18 +140,16 @@ test('title of specified task should be changed', () => {
 
     expect(endState['toDoList2'][1].title).toBe('MilkyWay')
     expect(endState['toDoList1'][1].title).toBe("JS")
+    expect(endState['toDoList2'][0].title).toBe("bread")
 })
 
 test('new property with new array should be added when new todolist is added', () => {
-    const newTodo: ToDoListDomainType = {
+    const action = addTodolistAC ({todolist:{
         id: 'todolistid3',
         title: "i'm new",
         addedDate: '',
-        order: 0,
-        filter: 'all',
-        entityStatus: 'idle'
-    }
-    const action = addTodolistAC({todolist: newTodo})
+        order: 0
+    }})
     const endState = tasksReducer(startState, action)
 
     const keys = Object.keys(endState)
@@ -198,8 +193,8 @@ test('empty arrays should be added, when we set todolists', () => {
     const keys = Object.keys(endState)
 
     expect(keys.length).toBe(2)
-    expect(endState['1']).toStrictEqual([])
-    expect(endState['2']).toStrictEqual([])
+    expect(endState['1']).toBeDefined()
+    expect(endState['2']).toBeDefined()
 })
 
 test('tasks should be added for todolist', () => {

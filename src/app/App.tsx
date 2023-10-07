@@ -34,7 +34,9 @@ function App({demo = false}: PropsType) {
     const isLoggedIn1 = useAppSelector(state => state.auth.isLoggedIn)
 
     useEffect(() => {
-        dispatch(initializeAppTC())
+        if (!demo) {
+            dispatch(initializeAppTC())
+        }
     }, [])
 
     const logoutHandler = useCallback(() => {
@@ -47,7 +49,6 @@ function App({demo = false}: PropsType) {
 
 
     return (
-        <BrowserRouter>
             <div className="App">
                 <ErrorSnackBar/>
                 <AppBar position='static'>
@@ -58,7 +59,7 @@ function App({demo = false}: PropsType) {
                         <Typography variant={"h6"}>
                             News
                         </Typography>
-                        {isLoggedIn && <Button color={"inherit"} onClick={logoutHandler}>Login out</Button>}
+                        {isLoggedIn && <Button color={"inherit"} onClick={logoutHandler}>Log out</Button>}
                     </Toolbar>
                     {status === 'loading' && <LinearProgress/>}
                 </AppBar>
@@ -69,7 +70,6 @@ function App({demo = false}: PropsType) {
                     </Routes>
                 </Container>
             </div>
-        </BrowserRouter>
     );
 }
 

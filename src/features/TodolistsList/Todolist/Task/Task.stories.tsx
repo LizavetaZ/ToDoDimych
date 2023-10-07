@@ -1,6 +1,6 @@
 import {action} from '@storybook/addon-actions'
 import {Task} from "./Task";
-import ReduxStorePropviderDecorator from "../../../../stories/ReduxStorePropviderDecorator";
+import ReduxStorePropviderDecorator from "../../../../stories/ReduxStoreProviderDecorator";
 import {TaskPriorities, TaskStatuses} from "../../../../api/todolists-Api";
 
 export default {

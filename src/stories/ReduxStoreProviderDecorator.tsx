@@ -1,24 +1,29 @@
 import React from 'react';
 import {Provider} from "react-redux";
-import {AppRootState} from "../app/store";
-import {applyMiddleware, combineReducers, createStore} from "redux";
-import {todolistsReducer} from "../features/TodolistsList/todolists-reducer";
+import {AppRootState, RootReducerType} from "../app/store";
+import {combineReducers} from "redux";
+import {FilterValuesType, todolistsReducer} from "../features/TodolistsList/todolists-reducer";
 import {tasksReducer} from "../features/TodolistsList/tasks-reducer";
 import {v1} from "uuid";
 import {TaskPriorities, TaskStatuses} from "../api/todolists-Api";
 import {appReducer} from "../app/app-reducer";
 import thunkMiddleWare from "redux-thunk";
 
-export const rootReducer = combineReducers({
+import {authReducer} from "../features/TodolistsList/auth-reducer";
+import {configureStore} from "@reduxjs/toolkit";
+import {HashRouter} from "react-router-dom";
+
+export const rootReducer:RootReducerType = combineReducers({
     todolists: todolistsReducer,
     tasks: tasksReducer,
-    app: appReducer
+    app: appReducer,
+    auth: authReducer
 })
 
-const initialGlobalState = {
+const initialGlobalState: AppRootState = {
     todolists: [
-        {id: 'todolistId1', title: 'What to learn', filter: 'all', addedDate: '', order: 0, entityStatus: 'idle'},
-        {id: 'todolistId2', title: 'What to by', filter: 'all', addedDate: '', order: 0, entityStatus: 'loading'}
+        {id: 'todolistId1', title: 'What to learn', filter: 'all' as FilterValuesType, addedDate: '', order: 0, entityStatus: 'idle'},
+        {id: 'todolistId2', title: 'What to by', filter: 'all' as FilterValuesType, addedDate: '', order: 0, entityStatus: 'loading'}
     ],
     tasks: {
         ['todolistId1']: [
@@ -80,17 +85,27 @@ const initialGlobalState = {
     },
     app: {
         error:null,
-        status: 'idle', isInitialized: false},
+        status: 'succeeded', isInitialized: true},
     auth: {
         isLoggedIn: false
     }
 }
 
-export const storyBookStore = createStore(rootReducer, initialGlobalState as AppRootState, applyMiddleware(thunkMiddleWare))
+export const storyBookStore = configureStore({
+    reducer: rootReducer,
+    preloadedState: initialGlobalState,
+    middleware:  (getDefaultMiddleware) =>
+        getDefaultMiddleware()
+            .prepend(
+                thunkMiddleWare
+            )
+})
 
 
-const ReduxStorePropviderDecorator = (storyFn: any) => {
+export const ReduxStoreProviderDecorator = (storyFn: any) => {
     return <Provider store={storyBookStore}>{storyFn()}</Provider>
 };
 
-export default ReduxStorePropviderDecorator;
+export const BrowserDecorator = (storyFn: any) => {
+    return <HashRouter>{storyFn()}</HashRouter>
+};

@@ -1,10 +1,10 @@
 import App from "../app/App";
-import ReduxStorePropviderDecorator from "../stories/ReduxStorePropviderDecorator";
+import {BrowserDecorator, ReduxStoreProviderDecorator} from "../stories/ReduxStoreProviderDecorator";
 
 export default {
     title: 'App stories',
     component: App,
-    decorators: [ReduxStorePropviderDecorator]
+    decorators: [ReduxStoreProviderDecorator, BrowserDecorator]
 }
 
 
