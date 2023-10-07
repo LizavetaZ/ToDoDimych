@@ -13,7 +13,7 @@ test('ids should be equals', () => {
         entityStatus: 'idle'
     }
 
-    const action = addTodolistAC(newTodo)
+    const action = addTodolistAC({todolist: newTodo})
 
     const endTasksState = tasksReducer(startTasksState, action)
     const endTodolistsState = todolistsReducer(startTodolistsState, action)
@@ -22,8 +22,8 @@ test('ids should be equals', () => {
     const idFromTasks = keys[0]
     const idFromTodolists = endTodolistsState[0].id
 
-    expect(idFromTasks).toBe(action.todolist.id)
-    expect(idFromTodolists).toBe(action.todolist.id)
+    expect(idFromTasks).toBe(action.payload.todolist.id)
+    expect(idFromTodolists).toBe(action.payload.todolist.id)
 
 
 })
