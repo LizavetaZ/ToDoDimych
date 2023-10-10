@@ -4,6 +4,7 @@ import {handleServerNetworkError} from "../../utils/error-utils";
 import {ThunkType} from "../../app/store";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {fetchTasksTC} from "./tasks-reducer";
+import {clearTasksAndTodolists} from "../../Common/actions/common.action";
 
 const initialState: Array<ToDoListDomainType> = []
 
@@ -36,13 +37,18 @@ const slice = createSlice({
             return action.payload.todolists.map(tl =>{
                 return {...tl, filter: 'all', entityStatus: "idle"}
             } )
-        },
-        clearTodosDataAC:() => []
+        }
+    },
+    extraReducers: builder => {
+        builder
+            .addCase(clearTasksAndTodolists, () => {
+                return []
+            })
     }
 })
 
 export const todolistsReducer = slice.reducer
-export const {removeTodolistAC, addTodolistAC, changeTotodlistTitleAC, changeTotodlistFilterAC, changeTodolistEntityStatusAC, setTodolistsAC, clearTodosDataAC} = slice.actions
+export const {removeTodolistAC, addTodolistAC, changeTotodlistTitleAC, changeTotodlistFilterAC, changeTodolistEntityStatusAC, setTodolistsAC} = slice.actions
 
 
 // export const todolistsReducer = (state: Array<ToDoListDomainType> = initialState, action: ActionTypes): Array<ToDoListDomainType> => {
@@ -142,7 +148,6 @@ export type ToDoListDomainType = ToDoListType & {
 export type AddTodolistActionType = ReturnType<typeof addTodolistAC>
 export type RemoveTodoListActionType = ReturnType<typeof removeTodolistAC>
 export type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>
-export type ClearDataActionType = ReturnType<typeof clearTodosDataAC>
 // export type changeTodolistEntityStatusACType = ReturnType<typeof changeTodolistEntityStatusAC>
 //
 // type ActionTypes =

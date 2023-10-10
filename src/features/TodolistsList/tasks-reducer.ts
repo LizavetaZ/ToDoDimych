@@ -1,9 +1,10 @@
-import {addTodolistAC, clearTodosDataAC, removeTodolistAC, setTodolistsAC} from "./todolists-reducer";
+import {addTodolistAC, removeTodolistAC, setTodolistsAC} from "./todolists-reducer";
 import {TaskPriorities, TaskStatuses, TaskType, todolistsApi, UpdateTaskModelType} from "../../api/todolists-Api";
 import {AppRootState, ThunkType} from "../../app/store";
 import {setAppStatusAC} from "../../app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {clearTasksAndTodolists} from "../../Common/actions/common.action";
 
 const initialState: TasksStateType = {}
 
@@ -44,7 +45,9 @@ const slice = createSlice({
                     state[tl.id] = []
                 })
             })
-            .addCase(clearTodosDataAC, () => ({}))
+            .addCase(clearTasksAndTodolists, () => {
+                return {}
+            })
 
     }
 })

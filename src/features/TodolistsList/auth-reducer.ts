@@ -3,7 +3,7 @@ import {authAPI, LoginParamsType} from "../../api/todolists-Api";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 import {ThunkType} from "../../app/store";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {clearTodosDataAC} from "./todolists-reducer";
+import {clearTasksAndTodolists} from "../../Common/actions/common.action";
 
 
 const initialState = {
@@ -68,7 +68,7 @@ export const logoutTC = ():ThunkType => async (dispatch) => {
             if (result.data.resultCode === 0) {
                 dispatch(setIsLoggedInAC({value: false}))
                 dispatch(setAppStatusAC({status: 'succeeded'}))
-                dispatch(clearTodosDataAC())
+                dispatch(clearTasksAndTodolists())
             }
             else {
                 handleServerAppError(result.data, dispatch)
