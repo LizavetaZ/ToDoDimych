@@ -1,4 +1,3 @@
-import {Dispatch} from "redux";
 import {authAPI} from "../api/todolists-Api";
 import {setIsLoggedInAC} from "../features/TodolistsList/auth-reducer";
 import {ThunkType} from "./store";

@@ -1,17 +1,5 @@
-import {
-    addTodolistAC,
-    AddTodolistActionType, removeTodolistAC,
-    RemoveTodoListActionType, setTodolistsAC,
-    SetTodolistsActionType
-} from "./todolists-reducer";
-import {
-    TaskPriorities,
-    TaskStatuses,
-    TaskType,
-    todolistsApi,
-    ToDoListType,
-    UpdateTaskModelType
-} from "../../api/todolists-Api";
+import {addTodolistAC, clearTodosDataAC, removeTodolistAC, setTodolistsAC} from "./todolists-reducer";
+import {TaskPriorities, TaskStatuses, TaskType, todolistsApi, UpdateTaskModelType} from "../../api/todolists-Api";
 import {AppRootState, ThunkType} from "../../app/store";
 import {setAppStatusAC} from "../../app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
@@ -56,6 +44,8 @@ const slice = createSlice({
                     state[tl.id] = []
                 })
             })
+            .addCase(clearTodosDataAC, () => ({}))
+
     }
 })
 

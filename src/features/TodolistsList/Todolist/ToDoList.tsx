@@ -24,12 +24,12 @@ export const ToDoList = React.memo(({demo, ...props}: ToDoListType) => {
 
     const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[props.todolist.id])
 
-    useEffect(() => {
-        if(demo) {
-            return
-        }
-        dispatch(fetchTasksTC(props.todolist.id))
-    }, [])
+    // useEffect(() => {
+    //     if(demo) {
+    //         return
+    //     }
+    //     dispatch(fetchTasksTC(props.todolist.id))
+    // }, [])
 
     const onAllClickHandler = useCallback(() => props.changeFilter('all', props.todolist.id), [props.changeFilter, props.todolist.id])
     const onActiveClickHandler = useCallback(() => props.changeFilter('active', props.todolist.id), [props.changeFilter, props.todolist.id])
