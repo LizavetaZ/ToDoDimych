@@ -17,7 +17,7 @@ export const Task = React.memo((props: TaskPropsType) => {
     const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[props.todolistId])
 
     const onRemoveHandler = () => {
-        dispatch(removeTaskTC(props.task.id, props.todolistId))
+        dispatch(removeTaskTC({ taskId: props.task.id, todolistId: props.todolistId }));
     }
 
     const onChangeStatusHandler = useCallback ((e: ChangeEvent<HTMLInputElement>) => {

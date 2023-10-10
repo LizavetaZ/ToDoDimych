@@ -1,6 +1,6 @@
-import {addTaskAC, removeTaskAC, setTasksAC, tasksReducer, TasksStateType, updateTaskAC} from "./tasks-reducer";
-import {addTodolistAC, removeTodolistAC, setTodolistsAC, ToDoListDomainType} from "./todolists-reducer";
-import {TaskPriorities, TaskStatuses, todolistsApi} from "../../api/todolists-Api";
+import {addTaskAC, fetchTasksTC, removeTaskTC, tasksReducer, TasksStateType, updateTaskAC} from "./tasks-reducer";
+import {addTodolistAC, removeTodolistAC, setTodolistsAC} from "./todolists-reducer";
+import {TaskPriorities, TaskStatuses} from "../../api/todolists-Api";
 
 let startState: TasksStateType = {}
 beforeEach(() => {
@@ -90,7 +90,8 @@ beforeEach(() => {
 })
 
 test('correct task should be deleted from correct array', () => {
-    const action = removeTaskAC({taskId: '2',todolistId: 'toDoList2'})
+    const param = {taskId: '2',todolistId: 'toDoList2'}
+    const action = removeTaskTC.fulfilled(param, 'requestId', param)
 
     const endState = tasksReducer(startState, action)
 
@@ -198,7 +199,7 @@ test('empty arrays should be added, when we set todolists', () => {
 })
 
 test('tasks should be added for todolist', () => {
-    const action = setTasksAC({tasks: startState['toDoList1'],todolistId: 'toDoList1'})
+    const action = fetchTasksTC.fulfilled({tasks: startState['toDoList1'],todolistId: 'toDoList1'}, 'requestId', 'toDoList1')
 
     const endState = tasksReducer({
         'toDoList2': [],
