@@ -1,10 +1,10 @@
-import React, {useCallback, useEffect} from "react";
+import React, {useCallback} from "react";
 import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
 import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {Button, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
-import {addTaskTC, fetchTasksTC} from "../tasks-reducer";
-import {useDispatch, useSelector} from "react-redux";
+import {addTaskTC} from "../tasks-reducer";
+import {useSelector} from "react-redux";
 import {AppRootState, useAppDispatch} from "../../../app/store";
 import {Task} from "./Task/Task";
 import {TaskStatuses, TaskType} from "../../../api/todolists-Api";
@@ -52,7 +52,7 @@ export const ToDoList = React.memo(({demo, ...props}: ToDoListType) => {
     }
 
     const addTaskForItemForm = useCallback((title: string) => {
-        dispatch(addTaskTC(title, props.todolist.id))
+        dispatch(addTaskTC({title, todoListId: props.todolist.id}))
     }, [props.todolist.id])
 
     return (

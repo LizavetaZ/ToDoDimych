@@ -83,9 +83,12 @@ export enum TaskPriorities {
     Later = 4
 }
 
+export type FieldErrorType = {field: string, error: string}
+
 export type ResponseType<D = {}> = {
     resultCode: number
     messages: string[]
+    fieldsErrors?: Array<FieldErrorType>
     data: D
 }
 

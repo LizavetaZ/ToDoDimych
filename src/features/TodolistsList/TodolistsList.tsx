@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect} from 'react'
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {AppRootState, useAppDispatch} from "../../app/store";
 import {
-    addTodolistTC,
-    changeTotodlistFilterAC, changeTotodlistTitleTC,
+    addTodolistTC, changeTodolistTitleTC,
+    changeTotodlistFilterAC,
     fetchTodolistsTC,
     FilterValuesType,
     removeTodolistTC,
@@ -40,17 +40,17 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
 
 
     const removeToDoList = useCallback((todolistId: string) => {
-        dispatch(removeTodolistTC(todolistId))
+        dispatch(removeTodolistTC({todolistId}))
     }, [])
 
 
     const addToDoList = useCallback((title: string) => {
-        dispatch(addTodolistTC(title));
+        dispatch(addTodolistTC({title}));
     }, [])
 
 
     const changeToDoListTitle = useCallback((todolistId: string, title: string) => {
-        dispatch(changeTotodlistTitleTC(todolistId, title))
+        dispatch(changeTodolistTitleTC({todolistId, title}))
     }, [])
 
     if (!isLoggedIn) {

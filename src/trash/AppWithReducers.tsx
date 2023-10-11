@@ -1,5 +1,4 @@
 import React, {useReducer} from 'react';
-import {updateTaskAC} from "../features/TodolistsList/tasks-reducer";
 import {TaskStatuses} from "../api/todolists-Api";
 // import './App.css';
 // import {ToDoList} from "./ToDoList";
