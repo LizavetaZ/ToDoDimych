@@ -3,12 +3,13 @@ import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
 import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {Button, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
-import {addTaskTC} from "../tasks-reducer";
 import {useSelector} from "react-redux";
-import {AppRootState, useAppDispatch} from "../../../app/store";
+import {AppRootState, useActions, useAppDispatch} from "../../../app/store";
 import {Task} from "./Task/Task";
 import {TaskStatuses, TaskType} from "../../../api/todolists-Api";
 import {FilterValuesType, ToDoListDomainType} from "../todolists-reducer";
+import {addTaskTC} from "features/TodolistsList/task-actions";
+import {tasksActions} from "features/TodolistsList/index";
 
 type ToDoListType = {
     todolist: ToDoListDomainType
@@ -20,16 +21,11 @@ type ToDoListType = {
 
 export const ToDoList = React.memo(({demo, ...props}: ToDoListType) => {
     console.log('todo')
-    const dispatch = useAppDispatch()
+    // const dispatch = useAppDispatch()
 
     const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[props.todolist.id])
 
-    // useEffect(() => {
-    //     if(demo) {
-    //         return
-    //     }
-    //     dispatch(fetchTasksTC(props.todolist.id))
-    // }, [])
+    const {addTaskTC} = useActions(tasksActions)
 
     const onAllClickHandler = useCallback(() => props.changeFilter('all', props.todolist.id), [props.changeFilter, props.todolist.id])
     const onActiveClickHandler = useCallback(() => props.changeFilter('active', props.todolist.id), [props.changeFilter, props.todolist.id])
@@ -52,7 +48,7 @@ export const ToDoList = React.memo(({demo, ...props}: ToDoListType) => {
     }
 
     const addTaskForItemForm = useCallback((title: string) => {
-        dispatch(addTaskTC({title, todoListId: props.todolist.id}))
+        addTaskTC({title, todoListId: props.todolist.id})
     }, [props.todolist.id])
 
     return (

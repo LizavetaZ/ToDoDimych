@@ -1,10 +1,6 @@
 import {authAPI} from "../api/todolists-Api";
-import {setIsLoggedInAC} from "../features/TodolistsList/auth-reducer";
-import {ThunkType} from "./store";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {clearTasksAndTodolists} from "../Common/actions/common.action";
-import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
-import {AxiosError} from "axios/index";
+import {setIsLoggedInAC} from "features/Auth/auth-reducer";
 
 export type InitialStateType = {
     status: RequestStatusType,

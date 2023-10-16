@@ -1,11 +1,11 @@
 import React, {ChangeEvent, useCallback} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootState, useAppDispatch} from "../../../../app/store";
-import {removeTaskTC, updateTaskTC} from "../../tasks-reducer";
+import {useSelector} from "react-redux";
+import {AppRootState, useActions, useAppDispatch} from "app/store";
 import {Checkbox, IconButton} from "@mui/material";
-import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
+import {EditableSpan} from "components/EditableSpan/EditableSpan";
 import {Delete} from "@mui/icons-material";
-import {TaskStatuses, TaskType} from "../../../../api/todolists-Api";
+import {TaskStatuses, TaskType} from "api/todolists-Api";
+import {tasksActions} from "features/TodolistsList/index";
 
 type TaskPropsType = {
     task: TaskType
@@ -16,17 +16,19 @@ export const Task = React.memo((props: TaskPropsType) => {
     const dispatch = useAppDispatch()
     const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[props.todolistId])
 
+    const {removeTaskTC, updateTaskTC} = useActions(tasksActions)
+
     const onRemoveHandler = () => {
-        dispatch(removeTaskTC({ taskId: props.task.id, todolistId: props.todolistId }));
+        removeTaskTC({ taskId: props.task.id, todolistId: props.todolistId })
     }
 
     const onChangeStatusHandler = useCallback ((e: ChangeEvent<HTMLInputElement>) => {
         let newIsDoneValue = e.currentTarget.checked
-        dispatch(updateTaskTC({taskId: props.task.id, domainModel: {status: newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New}, todoListId: props.todolistId}))
+        updateTaskTC({taskId: props.task.id, domainModel: {status: newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New}, todoListId: props.todolistId})
     }, [props.task.id, props.todolistId])
 
     const onChangeTitleHandler = useCallback ((newValue: string) => {
-        dispatch(updateTaskTC({taskId: props.task.id, domainModel: {title: newValue}, todoListId: props.todolistId}))
+        updateTaskTC({taskId: props.task.id, domainModel: {title: newValue}, todoListId: props.todolistId})
     }, [props.task.id, props.todolistId])
 
     return (

@@ -168,7 +168,7 @@ import {TaskStatuses} from "../api/todolists-Api";
 //                     <Typography variant={"h6"}>
 //                         News
 //                     </Typography>
-//                     <Button color={"inherit"}>Login</Button>
+//                     <Button color={"inherit"}>Auth</Button>
 //                 </Toolbar>
 //             </AppBar>
 //             <Container fixed>

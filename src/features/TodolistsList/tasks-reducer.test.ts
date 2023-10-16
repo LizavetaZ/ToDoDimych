@@ -1,6 +1,7 @@
-import {addTaskTC, fetchTasksTC, removeTaskTC, tasksReducer, TasksStateType, updateTaskTC} from "./tasks-reducer";
-import {addTodolistTC, fetchTodolistsTC, removeTodolistTC} from "./todolists-reducer";
+import {tasksReducer, TasksStateType} from "./tasks-reducer";
 import {TaskPriorities, TaskStatuses} from "../../api/todolists-Api";
+import {addTaskTC, fetchTasksTC, removeTaskTC, updateTaskTC} from "features/TodolistsList/task-actions";
+import {addTodolistTC, fetchTodolistsTC, removeTodolistTC} from "features/TodolistsList/todolists-actions";
 
 let startState: TasksStateType = {}
 beforeEach(() => {
