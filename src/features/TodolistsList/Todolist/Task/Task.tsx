@@ -16,19 +16,19 @@ export const Task = React.memo((props: TaskPropsType) => {
     const dispatch = useAppDispatch()
     const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[props.todolistId])
 
-    const {removeTaskTC, updateTaskTC} = useActions(tasksActions)
+    const {removeTask, updateTask} = useActions(tasksActions)
 
     const onRemoveHandler = () => {
-        removeTaskTC({ taskId: props.task.id, todolistId: props.todolistId })
+        removeTask({ taskId: props.task.id, todolistId: props.todolistId })
     }
 
     const onChangeStatusHandler = useCallback ((e: ChangeEvent<HTMLInputElement>) => {
         let newIsDoneValue = e.currentTarget.checked
-        updateTaskTC({taskId: props.task.id, domainModel: {status: newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New}, todoListId: props.todolistId})
+        updateTask({taskId: props.task.id, domainModel: {status: newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New}, todoListId: props.todolistId})
     }, [props.task.id, props.todolistId])
 
     const onChangeTitleHandler = useCallback ((newValue: string) => {
-        updateTaskTC({taskId: props.task.id, domainModel: {title: newValue}, todoListId: props.todolistId})
+        updateTask({taskId: props.task.id, domainModel: {title: newValue}, todoListId: props.todolistId})
     }, [props.task.id, props.todolistId])
 
     return (

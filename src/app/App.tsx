@@ -13,11 +13,11 @@ import {
 import {Login, Menu} from "@mui/icons-material";
 import {useSelector} from "react-redux";
 import {initializeAppTC} from "./app-reducer";
-import {AppRootState, useAppDispatch} from "./store";
+import {useAppDispatch} from "./store";
 import {Route, Routes} from "react-router-dom";
 import {ErrorSnackBar} from "components/ErrorSnackBar/ErrorSnackBar";
 import {logoutTC} from "features/Auth/auth-reducer";
-import {TodolistsList} from "features/TodolistsList/TodolistsList";
+import {TodolistsList} from "features/TodolistsList";
 import {selectIsInitialized, selectStatus} from "app/selectors";
 import {authSelectors} from "features/Auth";
 
