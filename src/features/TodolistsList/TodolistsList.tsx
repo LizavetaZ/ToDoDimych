@@ -4,11 +4,11 @@ import {AppRootState, useActions, useAppDispatch} from "app/store";
 import {FilterValuesType, ToDoListDomainType} from "./todolists-reducer";
 import {TasksStateType} from "./tasks-reducer";
 import {Grid, Paper} from "@mui/material";
-import {AddItemForm} from "components/AddItemForm/AddItemForm";
+import {AddItemForm, AddItemFormSubmitHelperType} from "components/AddItemForm/AddItemForm";
 import {ToDoList} from "./Todolist/ToDoList";
 import {Navigate} from "react-router-dom";
 import {selectIsLoggedIn} from "features/Auth/selectors";
-import {todolistsActions} from "features/TodolistsList/index";
+import {tasksActions, todolistsActions} from "features/TodolistsList/index";
 
 type PropsType = {
     demo?: boolean;
@@ -16,14 +16,27 @@ type PropsType = {
 
 export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
 
+    const dispatch = useAppDispatch()
+
     const todoLists = useSelector<AppRootState, Array<ToDoListDomainType>>(state => state.todolists)
     const tasks = useSelector<AppRootState, TasksStateType>(state => state.tasks)
     const isLoggedIn = useSelector(selectIsLoggedIn)
 
     const {addTodolistTC, fetchTodolistsTC} = useActions(todolistsActions)
 
-    const addTodolistCallback = useCallback(async (title: string) => {
-        addTodolistTC(title)
+    const addTodolistCallback = useCallback(async (title: string, helpers: AddItemFormSubmitHelperType) => {
+        let thunk = todolistsActions.addTodolistTC(title)
+        const resultAction = await dispatch(thunk)
+        if (todolistsActions.addTodolistTC.rejected.match(resultAction)) {
+            if (resultAction.payload?.errors?.length) {
+                const errorMessage = resultAction.payload?.errors[0]
+                helpers.setError(errorMessage)
+            } else {
+                helpers.setError('Some error occured')
+            }
+        } else {
+            helpers.setnewTaskTitle('')
+        }
     }, [])
 
     useEffect(() => {

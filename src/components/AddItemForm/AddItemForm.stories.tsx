@@ -6,15 +6,8 @@ export default {
     component: AddItemForm
 }
 
-const someAsyncFunction =() => {
-    setTimeout(() => {}, 1000)
-}
-
-const callback = async () => {
-    // Perform asynchronous operations here
-    await someAsyncFunction();
-    // Rest of the callback logic
-    action('Button add was pressed inside the form');
+const callback = async (...params: any[]) => {
+    action('Button add was pressed inside the form')(...params)
 };
 
 export const AddItemFormBaseExample = (props: any) => {
