@@ -3,7 +3,7 @@ import {IconButton, TextField} from "@mui/material";
 import {ControlPoint} from "@mui/icons-material";
 
 type AddItemFormPropsType = {
-    addItem: (title: string) => void
+    addItem: (title: string) => Promise<any>
     disabled?: boolean
 }
 
@@ -26,10 +26,15 @@ export const AddItemForm = React.memo(({addItem, disabled = false}: AddItemFormP
             setnewTaskTitle('')
         }
     }
-    const addTask = () => {
+    const addTask = async () => {
         if (newTaskTitle.trim() !== '') {
-            addItem(newTaskTitle.trim());
-            setnewTaskTitle('')
+            try {
+               await addItem(newTaskTitle.trim());
+                setnewTaskTitle('')
+            } catch (error) {
+                setError(error as string)
+            }
+
         } else {
             setError('Title is required!')
         }
@@ -45,7 +50,7 @@ export const AddItemForm = React.memo(({addItem, disabled = false}: AddItemFormP
                    onKeyPress={onKeyPressHandler}
                    error={!!error}
             helperText={error}/>
-            <IconButton onClick={addTask} color = {"primary"} disabled={disabled}><ControlPoint/></IconButton>
+            <IconButton onClick={addTask} color = {"primary"} style = {{marginLeft: '5px'}} disabled={disabled}><ControlPoint/></IconButton>
         </div>
     )
 })

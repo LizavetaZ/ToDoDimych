@@ -10,16 +10,16 @@ import {
     Toolbar,
     Typography
 } from "@mui/material";
-import {Login, Menu} from "@mui/icons-material";
+import {Menu} from "@mui/icons-material";
 import {useSelector} from "react-redux";
-import {initializeAppTC} from "./app-reducer";
+import {asyncActions} from "./app-reducer";
 import {useAppDispatch} from "./store";
 import {Route, Routes} from "react-router-dom";
 import {ErrorSnackBar} from "components/ErrorSnackBar/ErrorSnackBar";
 import {logoutTC} from "features/Auth/auth-reducer";
 import {TodolistsList} from "features/TodolistsList";
 import {selectIsInitialized, selectStatus} from "app/selectors";
-import {authSelectors} from "features/Auth";
+import {authSelectors, Login} from "features/Auth";
 
 
 type PropsType = {
@@ -38,7 +38,7 @@ function App({demo = false}: PropsType) {
 
     useEffect(() => {
         if (!demo) {
-            dispatch(initializeAppTC())
+            dispatch(asyncActions.initializeAppTC())
         }
     }, [])
 

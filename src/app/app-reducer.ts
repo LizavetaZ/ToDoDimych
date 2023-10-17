@@ -1,4 +1,4 @@
-import {authAPI} from "../api/todolists-Api";
+import {authAPI} from "api/todolists-Api";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {setIsLoggedInAC} from "features/Auth/auth-reducer";
 
@@ -9,7 +9,7 @@ export type InitialStateType = {
 }
 
 
-export const initializeAppTC =  createAsyncThunk('app/initializeApp', async (param, {dispatch}) => {
+const initializeAppTC =  createAsyncThunk('app/initializeApp', async (param, {dispatch}) => {
     try {
         let result = await authAPI.me()
         if (result.data.resultCode === 0) {
@@ -23,6 +23,10 @@ export const initializeAppTC =  createAsyncThunk('app/initializeApp', async (par
         // dispatch(setAppIsInitializedAC({isInitialized: false}))
     }
 })
+
+export const asyncActions = {
+    initializeAppTC
+}
 
 const slice = createSlice({
     name: 'app',

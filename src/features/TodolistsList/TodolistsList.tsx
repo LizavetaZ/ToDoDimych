@@ -22,6 +22,9 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
 
     const {addTodolistTC, fetchTodolistsTC} = useActions(todolistsActions)
 
+    const addTodolistCallback = useCallback(async (title: string) => {
+        addTodolistTC(title)
+    }, [])
 
     useEffect(() => {
         if (demo || !isLoggedIn) {
@@ -32,24 +35,26 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
 
 
     if (!isLoggedIn) {
-        return <Navigate replace to="/login" />
+        return <Navigate replace to="/login"/>
     }
 
     return (
         <>
             <Grid container style={{padding: '20px'}}>
-                <AddItemForm addItem={addTodolistTC}/>
+                <AddItemForm addItem={addTodolistCallback}/>
             </Grid>
-            <Grid container spacing={3}>
+            <Grid container spacing={3} style={{flexWrap: 'nowrap', overflowX: 'scroll'}}>
                 {
                     todoLists.map((tl) => {
                         return (
                             <Grid item key={tl.id}>
-                                <Paper style={{padding: '10px'}}>
+                                <div style={{width: '300px'}}>
                                     <ToDoList
-                                              key={tl.id}
-                                              todolist={tl}
-                                   demo={demo} /></Paper></Grid>)
+                                        key={tl.id}
+                                        todolist={tl}
+                                        demo={demo}/>
+                                </div>
+                            </Grid>)
                     })
                 }
             </Grid>

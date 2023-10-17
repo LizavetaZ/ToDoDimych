@@ -3,7 +3,7 @@ import {RequestStatusType, setAppStatusAC} from "app/app-reducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {clearTasksAndTodolists} from "Common/actions/common.action";
 import {AxiosError} from "axios";
-import {handleServerNetworkError} from "utils/error-utils";
+import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
 import {fetchTasks} from "features/TodolistsList/tasks-reducer";
 
 const fetchTodolistsTC = createAsyncThunk('todolists/fetchTodolists', async (param, {
@@ -34,6 +34,7 @@ const removeTodolistTC = createAsyncThunk('todolists/removeTodolist', async (
         dispatch(setAppStatusAC({status: 'succeeded'}))
         return {id: todolistId}
     } catch (err) {
+        dispatch(setAppStatusAC({status: 'failed'}))
         const error: AxiosError = err as AxiosError
         handleServerNetworkError(error, dispatch)
         return rejectWithValue(null)
@@ -46,8 +47,16 @@ const addTodolistTC = createAsyncThunk('todolists/addTodolist', async ( title: s
     dispatch(setAppStatusAC({status: 'loading'}))
     try {
         const result = await todolistsApi.createToDoList(title);
-        dispatch(setAppStatusAC({status: 'succeeded'}))
-        return {todolist: result.data.data.item}
+        if (result.data.resultCode === 0) {
+            dispatch(setAppStatusAC({status: 'succeeded'}))
+            return {todolist: result.data.data.item}
+        }
+        else {
+            dispatch(setAppStatusAC({status: 'failed'}))
+            handleServerAppError(result.data, dispatch)
+            return rejectWithValue(null)
+        }
+
     } catch (err) {
         const error: AxiosError = err as AxiosError
         handleServerNetworkError(error, dispatch)

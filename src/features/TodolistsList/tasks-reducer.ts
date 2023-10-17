@@ -43,12 +43,12 @@ export const addTask = createAsyncThunk('tasks/addTask', async (param: {
         } else {
             handleServerAppError(result.data, dispatch)
             dispatch(setAppStatusAC({status: 'failed'}))
-            return rejectWithValue(null)
+            return rejectWithValue({errors: result.data.messages, fieldsErrors: result.data.fieldsErrors})
         }
     } catch (err) {
         const error: AxiosError = err as AxiosError
         handleServerNetworkError(error, dispatch)
-        return rejectWithValue(null)
+        return rejectWithValue({errors: [error.message], fieldsErrors: undefined})
     }
 })
 export const updateTask = createAsyncThunk('tasks/updateTask', async (param: {

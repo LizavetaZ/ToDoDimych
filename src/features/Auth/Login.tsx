@@ -9,10 +9,9 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {FormikHelpers, useFormik} from "formik";
 import {useSelector} from "react-redux";
-import {loginTC} from "features/Auth/auth-reducer";
 import {useAppDispatch} from "app/store";
 import {Navigate} from 'react-router-dom';
-import {authSelectors} from "features/Auth";
+import {authActions, authSelectors} from "features/Auth";
 
 
 type FormValuesType = {
@@ -45,8 +44,8 @@ export const Login = () => {
             rememberMe: false,
         },
         onSubmit: async (values: FormValuesType, formikHelpers: FormikHelpers<FormValuesType>) => {
-          const action = await dispatch(loginTC(values))
-            if (loginTC.rejected.match(action)) {
+          const action = await dispatch(authActions.loginTC(values))
+            if (authActions.loginTC.rejected.match(action)) {
                 if (action.payload?.fieldsErrors?.length) {
                     const error = action.payload?.fieldsErrors[0]
                     formikHelpers.setFieldError(error.field, error.error)

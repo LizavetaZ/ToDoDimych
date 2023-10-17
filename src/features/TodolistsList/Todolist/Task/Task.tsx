@@ -13,9 +13,6 @@ type TaskPropsType = {
 }
 export const Task = React.memo((props: TaskPropsType) => {
 
-    const dispatch = useAppDispatch()
-    const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[props.todolistId])
-
     const {removeTask, updateTask} = useActions(tasksActions)
 
     const onRemoveHandler = () => {
@@ -23,8 +20,7 @@ export const Task = React.memo((props: TaskPropsType) => {
     }
 
     const onChangeStatusHandler = useCallback ((e: ChangeEvent<HTMLInputElement>) => {
-        let newIsDoneValue = e.currentTarget.checked
-        updateTask({taskId: props.task.id, domainModel: {status: newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New}, todoListId: props.todolistId})
+        updateTask({taskId: props.task.id, domainModel: {status: e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New}, todoListId: props.todolistId})
     }, [props.task.id, props.todolistId])
 
     const onChangeTitleHandler = useCallback ((newValue: string) => {
@@ -32,12 +28,12 @@ export const Task = React.memo((props: TaskPropsType) => {
     }, [props.task.id, props.todolistId])
 
     return (
-        <li key={props.task.id} className={props.task.status===TaskStatuses.Completed ? 'is-done' : ''}>
+        <div key={props.task.id} style = {{position: 'relative'}} className={props.task.status===TaskStatuses.Completed ? 'is-done' : ''}>
             <Checkbox checked={props.task.status === TaskStatuses.Completed}
                       onChange={onChangeStatusHandler}/>
             <EditableSpan title={props.task.title} onChange={onChangeTitleHandler}/>
-            <IconButton onClick={onRemoveHandler}><Delete/>
+            <IconButton size = {"small"} onClick={onRemoveHandler} style = {{position: 'absolute', right: '2px', top: '2px'}}><Delete fontSize={'small'}/>
             </IconButton>
-        </li>
+        </div>
     )
 })
