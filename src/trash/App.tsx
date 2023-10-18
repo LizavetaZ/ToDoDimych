@@ -1,5 +1,5 @@
 import React, {useReducer, useState} from 'react';
-// import './App.css';
+// import './Application.css';
 // import {TasksType, ToDoList} from "./ToDoList";
 // import {v1} from "uuid";
 // import {AddItemForm} from "./AddItemForm";
@@ -33,7 +33,7 @@ import React, {useReducer, useState} from 'react';
 //     [key: string]: Array<TasksType>
 // }
 //
-// function App() {
+// function Application() {
 //
 //     function changeFilter(value: FilterValuesType, todolistID: string) {
 //         // let todoList = todoLists.find(tl => tl.id === todolistID)
@@ -126,7 +126,7 @@ import React, {useReducer, useState} from 'react';
 //     }
 //
 //     return (
-//         <div className="App">
+//         <div className="Application">
 //             <AppBar position='static'>
 //                 <Toolbar>
 //                     <IconButton edge={"start"} color={"inherit"} aria-label={'menu'}>
@@ -176,4 +176,4 @@ import React, {useReducer, useState} from 'react';
 //     );
 // }
 //
-// export default App;
+// export default Application;

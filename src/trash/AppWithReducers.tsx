@@ -1,6 +1,6 @@
 import React, {useReducer} from 'react';
 import {TaskStatuses} from "../api/todolists-Api";
-// import './App.css';
+// import './Application.css';
 // import {ToDoList} from "./ToDoList";
 // import {v1} from "uuid";
 // import {AddItemForm} from "./AddItemForm";
@@ -159,7 +159,7 @@ import {TaskStatuses} from "../api/todolists-Api";
 //     }
 //
 //     return (
-//         <div className="App">
+//         <div className="Application">
 //             <AppBar position='static'>
 //                 <Toolbar>
 //                     <IconButton edge={"start"} color={"inherit"} aria-label={'menu'}>

@@ -1,12 +1,12 @@
 import {
     asyncActions,
     changeTodolistFilter,
-    FilterValuesType, ToDoListDomainType,
-    todolistsReducer
+    FilterValuesType, ToDoListDomainType
 } from './todolists-reducer'
 import {v1} from 'uuid'
-import {RequestStatusType} from "app/app-reducer";
+import {RequestStatusType} from "features/Application/application-reducer";
 import {ToDoListType} from "api/todolists-Api";
+import {todolistsReducer} from "features/TodolistsList/index";
 
 let todolistId1 : string
 let todolistId2 : string
@@ -75,7 +75,7 @@ test('todolist filter should be changed', () => {
 
 test('todolists should be set to the state', () => {
     let payload = {todolists: startState};
-    const action = asyncActions.fetchTodolistsTC.fulfilled(payload, 'requestId')
+    const action = asyncActions.fetchTodolistsTC.fulfilled(payload, 'requestId', undefined)
     const endState = todolistsReducer([], action)
 
     expect(endState.length).toBe(2)
