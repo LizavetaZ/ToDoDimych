@@ -1,7 +1,10 @@
-import {asyncActions, ToDoListDomainType} from "./todolists-reducer";
-import {TasksStateType} from "./tasks-reducer";
-import {tasksReducer, todolistsReducer} from "features/TodolistsList/index";
+import {slice, ToDoListDomainType} from "./todolists-reducer";
+import {TasksStateType, slice as tasksSlice} from "./tasks-reducer";
+import {todolistsActions} from "features/TodolistsList";
 
+const todolistsReducer = slice.reducer
+const tasksReducer = tasksSlice.reducer
+const {addTodolistTC} = todolistsActions
 test('ids should be equals', () => {
     const startTasksState : TasksStateType = {}
     const startTodolistsState : Array<ToDoListDomainType> = []
@@ -14,7 +17,7 @@ test('ids should be equals', () => {
         entityStatus: 'idle'
     }
 
-    const action = asyncActions.addTodolistTC.fulfilled({todolist: newTodo}, 'requestId', newTodo.title)
+    const action = addTodolistTC.fulfilled({todolist: newTodo}, 'requestId', newTodo.title)
 
     const endTasksState = tasksReducer(startTasksState, action)
     const endTodolistsState = todolistsReducer(startTodolistsState, action)

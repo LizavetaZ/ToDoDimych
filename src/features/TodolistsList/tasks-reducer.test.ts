@@ -1,8 +1,13 @@
 
-import {addTask, fetchTasks, removeTask, TasksStateType, updateTask} from "./tasks-reducer";
+import {slice, TasksStateType} from "./tasks-reducer";
 import {TaskPriorities, TaskStatuses} from "api/todolists-Api";
-import {asyncActions} from "features/TodolistsList/todolists-reducer";
-import {tasksReducer} from "features/TodolistsList/index";
+import {asyncActions as todolistAsyncActions} from "./todolists-reducer"
+import {asyncActions as taskAsyncActions} from "./tasks-reducer"
+
+const {reducer: tasksReducer} = slice
+const {} = tasksReducer
+const {fetchTodolistsTC, removeTodolistTC, addTodolistTC} = todolistAsyncActions
+const {addTask, fetchTasks, removeTask, updateTask} = taskAsyncActions
 
 let startState: TasksStateType = {}
 beforeEach(() => {
@@ -155,7 +160,7 @@ test('new property with new array should be added when new todolist is added', (
             addedDate: '',
             order: 0
         }};
-    const action = asyncActions.addTodolistTC.fulfilled (payload, 'requestId', payload.todolist.title)
+    const action = addTodolistTC.fulfilled (payload, 'requestId', payload.todolist.title)
     const endState = tasksReducer(startState, action)
 
     const keys = Object.keys(endState)
@@ -169,7 +174,7 @@ test('new property with new array should be added when new todolist is added', (
 })
 
 test('property with todolistId should be deleted', () => {
-    const action = asyncActions.removeTodolistTC.fulfilled({id: 'toDoList2'}, 'requestId', 'toDoList2')
+    const action = removeTodolistTC.fulfilled({id: 'toDoList2'}, 'requestId', 'toDoList2')
     const endState = tasksReducer(startState, action)
 
 
@@ -180,7 +185,7 @@ test('property with todolistId should be deleted', () => {
 })
 
 test('property with todolistId should be deleted', () => {
-    const action = asyncActions.removeTodolistTC.fulfilled({id: 'toDoList2'}, 'requestId', 'toDoList2')
+    const action = removeTodolistTC.fulfilled({id: 'toDoList2'}, 'requestId', 'toDoList2')
     const endState = tasksReducer(startState, action)
 
     const keys = Object.keys(endState)
@@ -190,7 +195,7 @@ test('property with todolistId should be deleted', () => {
 })
 
 test('empty arrays should be added, when we set todolists', () => {
-    const action = asyncActions.fetchTodolistsTC.fulfilled({todolists:[
+    const action = fetchTodolistsTC.fulfilled({todolists:[
         {id: '1', title: 'title 1', addedDate: '', order: 0},
         {id: '2', title: 'title 2', addedDate: '', order: 0}
     ]}, 'requestId', undefined)
